@@ -21,7 +21,8 @@ def runSmk(smk, configfile, wdir, profile):
             '--configfile', configfile,
             '-d', wdir,
             '--filegraph',
-            '--dryrun'
+            '--dryrun',
+            '--quiet'
         ],
         stdout=sp.PIPE,
         stderr=sp.PIPE
