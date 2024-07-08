@@ -1,0 +1,7 @@
+{
+  "full_name": "Ward Deboutte",
+  "email": "w@rddeboutte.com",
+  "python": ["3.10", "3.11", "3.12"],
+  "project_name": "another_project",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}"
+}
