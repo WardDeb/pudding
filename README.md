@@ -1,2 +1,3 @@
-# pudding
-An attempt at a project template
+# Pudding
+
+An attempt at a project template that works for me.  The proof is (or will hopefully be) in the pudding.  
