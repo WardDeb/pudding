@@ -10,7 +10,7 @@ def calcHash(filepath):
     ).hexdigest()
 
 
-def runSmk(smk=smk, configfile=configfile, wdir=wdir, profile=profile):
+def runSmk(smk, configfile, wdir, profile):
     print(f"[bold yellow] Running {Path(smk).stem} [/bold yellow]")
     opng = Path(wdir, 'DAGs' ,Path(smk).stem +'.png')
     opng.parents[0].mkdir(parents=True, exist_ok=True)
