@@ -9,4 +9,4 @@ SMK_PROFILE = 'slurmsnake8'
 WDIR = ''
 
 # WORKFLOW
-#runSmk(smk, CONFIGFILE, WDIR)
+#runSmk(smk, CONFIGFILE, WDIR, SMK_PROFILE)

@@ -10,16 +10,16 @@ def calcHash(filepath):
     ).hexdigest()
 
 
-def runSmk(smk=smk, configfile=configfile, wdir=wdir):
+def runSmk(smk=smk, configfile=configfile, wdir=wdir, profile=profile):
     print(f"[bold yellow] Running {Path(smk).stem} [/bold yellow]")
-    opng = Path(WDIR, 'DAGs' ,Path(smk).stem +'.png')
+    opng = Path(wdir, 'DAGs' ,Path(smk).stem +'.png')
     opng.parents[0].mkdir(parents=True, exist_ok=True)
     rg = sp.Popen(
         [
             'snakemake',
             '-s', smk,
-            '--configfile', CONFIGFILE,
-            '-d', WDIR,
+            '--configfile', configfile,
+            '-d', wdir,
             '--filegraph',
             '--dryrun'
         ],
@@ -39,8 +39,8 @@ def runSmk(smk=smk, configfile=configfile, wdir=wdir):
     ret = sp.run([
        'snakemake',
        '-s', smk,
-       '--configfile', CONFIGFILE,
-       '--profile', PROFILE,
-       '-d', WDIR
+       '--configfile', configfile,
+       '--profile', profile,
+       '-d', wdir
     ])
     return(ret.returncode)
