@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools >= 61.0", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.project_slug }}"
+description = ""
+readme = "README.md"
+dynamic = ["version"]
+keywords = []
+authors = [
+  {name = "WardDeb", email = 'w@rddeboutte.com'}
+]
+requires-python = ">={{ cookiecutter.python}}"
+dependencies = [
+  "rich-click"
+]
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pytest",
+]
+
+[project.scripts]
+
+[tool.setuptools_scm]
