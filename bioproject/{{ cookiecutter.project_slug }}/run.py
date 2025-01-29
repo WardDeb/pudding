@@ -4,7 +4,7 @@ import sys
 from rich import print
 
 # CONFIG
-CONFIGFILE = Path(__file__).parents[0] / 'smk_config.yml'
+CONFIGFILE = Path(__file__).parents[0] / 'conf' / 'smk_config.yml'
 SMK_PROFILE = 'slurmsnake8'
 WDIR = ''
 
