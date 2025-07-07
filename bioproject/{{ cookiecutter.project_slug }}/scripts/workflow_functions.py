@@ -70,22 +70,23 @@ def runSmk(smk, configfile, wdir, profile):
             '-s', smk,
             '--configfile', configfile,
             '-d', wdir,
-            '--filegraph',
+            '--rulegraph',
             '--dryrun',
             '--quiet'
         ],
         stdout=sp.PIPE,
         stderr=sp.PIPE
     )
-    rg.wait()
+    _stdout, _stderr = rg.communicate()
+    # Some snakemake versions still print that 'building' line in stdout. Get rid of it.
+    _stdout = _stdout.decode('utf-8').replace('Building DAG of jobs...\n', '').encode()
+
     print(f"plotting DAG under {opng}")
-    with open(opng, 'w') as f:
-        sp.Popen(
-            ['dot', '-Tpng'],
-            stdin=rg.stdout,
-            stdout=f
-        )
-    f.close()
+    sp.run(
+        ['dot', '-Tpng', '-o', opng],
+        input=_stdout,
+        check=True
+    )
     print(f"Running ")
     ret = sp.run([
        'snakemake',
