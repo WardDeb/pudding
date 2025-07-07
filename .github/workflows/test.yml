@@ -1,0 +1,27 @@
+name: cutting_cookies
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test_projects:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - name: install_cookiecutter
+        run: |
+          pip install cookiecutter
+      - name: bioproject
+        run: |
+          cookiecutter --directory bioproject .
+      - name: nfproject
+        run: |
+          cookiecutter --directory nfproject .
+      - name: pyproject
+        run: |
+          cookiecutter --directory pyproject .
