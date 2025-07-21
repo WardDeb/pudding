@@ -18,10 +18,10 @@ jobs:
           pip install cookiecutter
       - name: bioproject
         run: |
-          cookiecutter --directory bioproject .
+          cookiecutter --directory bioproject . --no-input
       - name: nfproject
         run: |
-          cookiecutter --directory nfproject .
+          cookiecutter --directory nfproject . --no-input
       - name: pyproject
         run: |
-          cookiecutter --directory pyproject .
+          cookiecutter --directory pyproject . --no-input
