@@ -7,6 +7,9 @@ on:
 jobs:
   test_projects:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        projects: [bioproject, nfproject, pyproject]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -16,12 +19,6 @@ jobs:
       - name: install_cookiecutter
         run: |
           pip install cookiecutter
-      - name: bioproject
+      - name: ${ matrix.projects }
         run: |
-          cookiecutter --directory bioproject . --no-input
-      - name: nfproject
-        run: |
-          cookiecutter --directory nfproject . --no-input
-      - name: pyproject
-        run: |
-          cookiecutter --directory pyproject . --no-input
+          cookiecutter --directory ${{ matrix.projects }} . --no-input
