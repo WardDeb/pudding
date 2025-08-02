@@ -6,8 +6,14 @@ from rich import print
 # CONFIG
 CONFIGFILE = Path(__file__).parents[0] / 'conf' / 'smk_config.yml'
 SMK_PROFILE = 'slurmsnake8'
-WDIR = ''
-RESULTSDIR = ''
+WDIR = './'
+RESULTSDIR = './'
+
+# TRACKDIC
+trackdic = {
+    'author': "{{ cookiecutter.full_name }}",
+    'repo': "{{ cookiecutter.project_slug }}",
+}
 
 # RUN WORKFLOW
 #runSmk(smk, CONFIGFILE, WDIR, SMK_PROFILE)
@@ -18,4 +24,4 @@ RFS = [
 ]
 
 # Update results
-print(shipResults(RFS, WDIR, RESULTSDIR))
+print(shipResults(RFS, WDIR, RESULTSDIR, trackdic))

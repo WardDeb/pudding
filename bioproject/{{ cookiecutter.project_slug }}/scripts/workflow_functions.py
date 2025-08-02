@@ -3,6 +3,7 @@ from rich import print
 from pathlib import Path
 import subprocess as sp
 import shutil
+import datetime
 import sys
 
 def calcHash(filepath):
@@ -10,8 +11,7 @@ def calcHash(filepath):
         open(filepath, 'rb').read()
     ).hexdigest()
 
-
-def shipResults(filetup, wdir, enddir):
+def shipResults(filetup, wdir, enddir, trackdic=None, delete=True):
     '''
     filetup is a tuple consisting of:
     (filepath, folder, fint)
@@ -32,8 +32,11 @@ def shipResults(filetup, wdir, enddir):
     tdic = {
         'replaced': 0,
         'unchanged': 0,
-        'created': 0
+        'created': 0,
+        'deleted': 0
     }
+    _checked_or_written = []
+
     for _ftup in filetup:
         for ofile in Path(wdir).glob(_ftup[0]):
             if len(_ftup) == 1:
@@ -51,12 +54,46 @@ def shipResults(filetup, wdir, enddir):
                 if calcHash(ofile) != calcHash(rfile):
                     shutil.copy(ofile, rfile)
                     tdic['replaced'] += 1
+                    _checked_or_written.append(rfile)
                 else:
                     tdic['unchanged'] += 1
+                    _checked_or_written.append(rfile)
                 continue
             else:
                 shutil.copyfile(ofile, rfile)
                 tdic['created'] += 1
+                _checked_or_written.append(rfile)
+    
+    # There is no check to make sure that there are no duplicates in the incoming tuples.
+    _checked_or_written = set(_checked_or_written)
+
+    # Glob the enddir for files that are not in the _checked_or_written list, and delete them.
+    if delete:
+        for ofile in Path(enddir).glob('**/*'):
+            if ofile.is_file() and ofile not in _checked_or_written and ofile.name != 'README.txt':
+                ofile.unlink()
+                tdic['deleted'] += 1
+        for ofile in Path(enddir).glob('**/'):
+            if ofile.is_dir() and not any(ofile.iterdir()):
+                ofile.rmdir()
+
+    # Book keeping.
+    if trackdic:
+        with open(Path(enddir) / 'README.txt', 'w') as f:
+            _commit = sp.check_output(['git', 'log', '-n', '1', '--pretty=format:"%H"']).decode().strip('"')
+            if not _commit:
+                _commit = 'unknown'
+            _remote = sp.check_output(['git', 'config', '--get', 'remote.origin.url']).decode().strip('"').strip('\n')
+            if not _remote:
+                _remote = 'unknown'
+
+            _lw = 25
+            f.write(f"{'Latest update on:':<{_lw}} {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"{'Code created by:':<{_lw}} {trackdic['author']}\n")
+            f.write(f"{'Results created with:':<{_lw}} {trackdic['repo']}\n")
+            f.write(f"{'Repository code is at:':<{_lw}} {_commit}\n")
+            f.write(f"{'Commit hash:':<{_lw}} {_remote}\n")
+
     return tdic
 
 
