@@ -80,10 +80,15 @@ def shipResults(filetup, wdir, enddir, trackdic=None, delete=True):
     # Book keeping.
     if trackdic:
         with open(Path(enddir) / 'README.txt', 'w') as f:
-            _commit = sp.check_output(['git', 'log', '-n', '1', '--pretty=format:"%H"']).decode().strip('"')
-            if not _commit:
+            try:
+                _commit = sp.check_output(['git', 'log', '-n', '1', '--pretty=format:"%H"']).decode().strip('"')
+            except sp.CalledProcessError: 
                 _commit = 'unknown'
-            _remote = sp.check_output(['git', 'config', '--get', 'remote.origin.url']).decode().strip('"').strip('\n')
+            try:
+                _remote = sp.check_output(['git', 'config', '--get', 'remote.origin.url']).decode().strip('"').strip('\n')
+            except sp.CalledProcessError:
+                _remote = 'unknown'
+
             if not _remote:
                 _remote = 'unknown'
 
