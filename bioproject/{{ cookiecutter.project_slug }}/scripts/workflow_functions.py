@@ -96,8 +96,8 @@ def shipResults(filetup, wdir, enddir, trackdic=None, delete=True):
             f.write(f"{'Latest update on:':<{_lw}} {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write(f"{'Code created by:':<{_lw}} {trackdic['author']}\n")
             f.write(f"{'Results created with:':<{_lw}} {trackdic['repo']}\n")
-            f.write(f"{'Repository code is at:':<{_lw}} {_commit}\n")
-            f.write(f"{'Commit hash:':<{_lw}} {_remote}\n")
+            f.write(f"{'Repository code is at:':<{_lw}} {_remote}\n")
+            f.write(f"{'Commit hash:':<{_lw}} {_commit}\n")
 
     return tdic
 
