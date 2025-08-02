@@ -125,7 +125,7 @@ def runSmk(smk, configfile, wdir, profile):
 
     if rg.returncode != 0:
         print(f"[bold red]Dryrun failed - return {rg.returncode}[/bold red]")
-        for _line in _stdout.split('\n'):
+        for _line in _stderr.decode('utf-8').split('\n'):
             print(f"{_line}")
         sys.exit(rg.returncode)
 
