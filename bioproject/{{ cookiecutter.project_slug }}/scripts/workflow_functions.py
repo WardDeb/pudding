@@ -3,7 +3,7 @@ from rich import print
 from pathlib import Path
 import subprocess as sp
 import shutil
-
+import sys
 
 def calcHash(filepath):
     return hashlib.md5(
@@ -80,6 +80,12 @@ def runSmk(smk, configfile, wdir, profile):
     _stdout, _stderr = rg.communicate()
     # Some snakemake versions still print that 'building' line in stdout. Get rid of it.
     _stdout = _stdout.decode('utf-8').replace('Building DAG of jobs...\n', '').encode()
+
+    if rg.returncode != 0:
+        print(f"[bold red]Dryrun failed - return {rg.returncode}[/bold red]")
+        for _line in _stdout.split('\n'):
+            print(f"{_line}")
+        sys.exit(rg.returncode)
 
     print(f"plotting DAG under {opng}")
     sp.run(
