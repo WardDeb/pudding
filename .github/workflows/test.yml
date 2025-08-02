@@ -22,3 +22,9 @@ jobs:
       - name: ${ matrix.projects }
         run: |
           cookiecutter --directory ${{ matrix.projects }} . --no-input
+      - name: run_bioproject
+        if: matrix.projects == 'bioproject'
+        run: |
+          python another_project/run.py
+          test -f README.txt || (echo "README.txt not created." && exit 1)
+          
