@@ -7,7 +7,7 @@ from rich import print
 CONFIGFILE = Path(__file__).parents[0] / 'conf' / 'smk_config.yml'
 SMK_PROFILE = 'slurmsnake8'
 WDIR = './'
-RESULTSDIR = './'
+RESULTSDIR = Path(__file__).parents[0]
 
 # TRACKDIC
 trackdic = {
@@ -24,4 +24,5 @@ RFS = [
 ]
 
 # Update results
-print(shipResults(RFS, WDIR, RESULTSDIR, trackdic))
+_enddir, filedic = shipResults(RFS, WDIR, RESULTSDIR, trackdic)
+print(f"Result in {str(_enddir)}:\n{filedic}")

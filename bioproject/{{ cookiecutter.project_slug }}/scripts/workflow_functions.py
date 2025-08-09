@@ -11,7 +11,7 @@ def calcHash(filepath):
         open(filepath, 'rb').read()
     ).hexdigest()
 
-def shipResults(filetup, wdir, enddir, trackdic=None, delete=True):
+def shipResults(filetup, wdir, enddir, trackdic, delete=True):
     '''
     filetup is a tuple consisting of:
     (filepath, folder, fint)
@@ -28,6 +28,32 @@ def shipResults(filetup, wdir, enddir, trackdic=None, delete=True):
     
     Note that filepath can be a pattern: 'RNA/*.txt' will take all txt files.
     '''
+    enddir = Path(enddir).resolve() / ("Results_" + "{{ cookiecutter.project_slug }}")
+    enddir.mkdir(parents=True, exist_ok=True)
+
+    # Book keeping
+    with open(Path(enddir) / 'README.txt', 'w') as f:
+        try:
+            _commit = sp.check_output(['git', 'log', '-n', '1', '--pretty=format:"%H"']).decode().strip('"')
+        except sp.CalledProcessError: 
+            _commit = 'unknown'
+        try:
+            _remote = sp.check_output(['git', 'config', '--get', 'remote.origin.url']).decode().strip('"').strip('\n')
+        except sp.CalledProcessError:
+            _remote = 'unknown'
+
+        if not _remote:
+            _remote = 'unknown'
+
+        _lw = 25
+        _author = trackdic.get('author', 'unknown')
+        _repo = trackdic.get('repo', 'unknown')
+
+        f.write(f"{'Latest update on:':<{_lw}} {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"{'Code created by:':<{_lw}} {_author}\n")
+        f.write(f"{'Results created with:':<{_lw}} {_repo}\n")
+        f.write(f"{'Repository code is at:':<{_lw}} {_remote}\n")
+        f.write(f"{'Commit hash:':<{_lw}} {_commit}\n")
 
     tdic = {
         'replaced': 0,
@@ -77,29 +103,8 @@ def shipResults(filetup, wdir, enddir, trackdic=None, delete=True):
             if ofile.is_dir() and not any(ofile.iterdir()):
                 ofile.rmdir()
 
-    # Book keeping.
-    if trackdic:
-        with open(Path(enddir) / 'README.txt', 'w') as f:
-            try:
-                _commit = sp.check_output(['git', 'log', '-n', '1', '--pretty=format:"%H"']).decode().strip('"')
-            except sp.CalledProcessError: 
-                _commit = 'unknown'
-            try:
-                _remote = sp.check_output(['git', 'config', '--get', 'remote.origin.url']).decode().strip('"').strip('\n')
-            except sp.CalledProcessError:
-                _remote = 'unknown'
 
-            if not _remote:
-                _remote = 'unknown'
-
-            _lw = 25
-            f.write(f"{'Latest update on:':<{_lw}} {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            f.write(f"{'Code created by:':<{_lw}} {trackdic['author']}\n")
-            f.write(f"{'Results created with:':<{_lw}} {trackdic['repo']}\n")
-            f.write(f"{'Repository code is at:':<{_lw}} {_remote}\n")
-            f.write(f"{'Commit hash:':<{_lw}} {_commit}\n")
-
-    return tdic
+    return (enddir, tdic)
 
 
 def runSmk(smk, configfile, wdir, profile):

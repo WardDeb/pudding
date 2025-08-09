@@ -10,7 +10,7 @@ These has been kept to a minimum, but required are still:
 
  - `WDIR`: The path to the actual working directory (where intermediate files will be stored).  
  - `SMK_PROFILE`: Name of (or path to) a working [snakemake profile](https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles).  
- - `RESULTSDIR`: Technically not needed (can be left as `./`). In case output files are defined (under RFS), these are kept in sync in this directory. Idea is to have a low-weight 'end result' directory. That can easily be shared.  
+ - `RESULTSDIR`: Technically not needed (can be left as `./`). In case output files are defined (under RFS), these are kept in sync in this directory. Idea is to have a low-weight 'end result' directory. That can easily be shared. Note that the actual results directory will be created inside RESULTSDIR and will be named `Results_{{ cookiecutter.project_slug }}`.
 
 
 # CONFIG
