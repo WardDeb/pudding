@@ -1,0 +1,4 @@
+figure.constrained_layout: True
+path.simplify : True
+figure.dpi : 300
+savefig.dpi : 300
