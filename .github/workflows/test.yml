@@ -18,7 +18,7 @@ jobs:
           cache: 'pip'
       - name: install_cookiecutter
         run: |
-          pip install cookiecutter
+          pip install cookiecutter ruff
       - name: ${ matrix.projects }
         run: |
           cookiecutter --directory ${{ matrix.projects }} . --no-input
@@ -27,4 +27,6 @@ jobs:
         run: |
           python another_project/run.py
           test -f another_project/Results_another_project/README.txt || (echo "README.txt not created." && exit 1)
-          
+      - name: lint
+        run:
+          ruff check another_project
