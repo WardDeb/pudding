@@ -16,9 +16,9 @@ trackdic = {
 }
 
 # RUN WORKFLOW
-#runSmk(smk, CONFIGFILE, WDIR, SMK_PROFILE)
+#runSmk('workflows/workflow.smk', CONFIGFILE, WDIR, SMK_PROFILE)
 
-# SHIP RESULTS
+# SHIP RESULTS (relative to WDIR).
 RFS = [
     ('results/*',)
 ]

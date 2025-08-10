@@ -140,7 +140,7 @@ def runSmk(smk, configfile, wdir, profile):
         input=_stdout,
         check=True
     )
-    print(f"Running ")
+    print("Running Snakemake")
     ret = sp.run([
        'snakemake',
        '-s', smk,
