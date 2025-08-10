@@ -26,5 +26,5 @@ jobs:
         if: matrix.projects == 'bioproject'
         run: |
           python another_project/run.py
-          test -f README.txt || (echo "README.txt not created." && exit 1)
+          test -f another_project/Results_another_project/README.txt || (echo "README.txt not created." && exit 1)
           
