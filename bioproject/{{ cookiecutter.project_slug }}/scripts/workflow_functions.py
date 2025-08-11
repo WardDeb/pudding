@@ -116,6 +116,7 @@ def runSmk(smk, configfile, wdir, profile):
             'snakemake',
             '-s', smk,
             '--configfile', configfile,
+            '--config', f'external_data={Path(__file__).resolve().parents[1] / "conf" / "external_data"}',
             '-d', wdir,
             '--rulegraph',
             '--dryrun',
@@ -131,6 +132,8 @@ def runSmk(smk, configfile, wdir, profile):
     if rg.returncode != 0:
         print(f"[bold red]Dryrun failed - return {rg.returncode}[/bold red]")
         for _line in _stderr.decode('utf-8').split('\n'):
+            print(f"{_line}")
+        for _line in _stdout.decode('utf-8').split('\n'):
             print(f"{_line}")
         sys.exit(rg.returncode)
 
