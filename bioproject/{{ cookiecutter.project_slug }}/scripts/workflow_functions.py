@@ -145,6 +145,7 @@ def runSmk(smk, configfile, wdir, profile):
        'snakemake',
        '-s', smk,
        '--configfile', configfile,
+       '--config', f'external_data={Path(__file__).resolve().parents[1] / 'conf' / 'external_data'}',
        '--profile', profile,
        '-d', wdir
     ])
