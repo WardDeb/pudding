@@ -22,18 +22,13 @@ jobs:
       - name: ${ matrix.projects }
         run: |
           cookiecutter --directory ${{ matrix.projects }} . --no-input
-      - name: run_bioproject
-        if: matrix.projects == 'bioproject'
-        run: |
-          python another_project/run.py
-          test -f another_project/Results_another_project/README.txt || (echo "README.txt not created." && exit 1)
       - name: lint
         run:
           ruff check another_project
       - name: pixi_env
         uses: prefix-dev/setup-pixi@v0.9.0
         with:
-          cache: true
+          cache: false
           working-directory: another_project
       - name: pixi_run
         if: matrix.projects == 'pyproject' || matrix.projects == 'bioproject'
