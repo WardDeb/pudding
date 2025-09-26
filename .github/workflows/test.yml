@@ -31,7 +31,6 @@ jobs:
           cache: false
           manifest-path: ${{ matrix.projects == 'pyproject' && 'another_project/pyproject.toml' || 'another_project/pixi.toml'}}
       - name: pixi_run
-        if: matrix.projects == 'pyproject' || matrix.projects == 'bioproject'
         working-directory: another_project
         env:
           PIXI_CMD: ${{ matrix.projects == 'bioproject' && 'python run.py' || 'python --version' }}
