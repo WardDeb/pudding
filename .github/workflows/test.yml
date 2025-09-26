@@ -30,3 +30,15 @@ jobs:
       - name: lint
         run:
           ruff check another_project
+      - name: pixi_env
+        uses: prefix-dev/setup-pixi@v0.9.0
+        with:
+          cache: true
+          working-directory: another_project
+      - name: pixi_run
+        if: matrix.projects == 'pyproject' || matrix.projects == 'bioproject'
+        working-directory: another_project
+        env:
+          PIXI_CMD: ${{ matrix.projects == 'bioproject' && 'python run.py' || 'python --version' }}
+        run: |
+          pixi run ${{ env.PIXI_CMD }}

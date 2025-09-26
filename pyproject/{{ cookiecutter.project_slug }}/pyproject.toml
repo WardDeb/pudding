@@ -27,6 +27,7 @@ dev = [
 [project.scripts]
 
 [tool.setuptools_scm]
+fallback_version = "0.0.1"
 [tool.ruff]
 exclude = [
   "docs",
